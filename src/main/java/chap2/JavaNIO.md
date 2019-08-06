@@ -37,3 +37,4 @@ ServerSocket负责绑定IP地址，启动监听端口；Socket负责发起连接
 ## AIO(异步通道)
 
 不需要通过Selector对注册的通道进行轮询操作即可实现异步读写，简化了NIO。
+
