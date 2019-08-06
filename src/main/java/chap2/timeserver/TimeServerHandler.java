@@ -26,10 +26,11 @@ public class TimeServerHandler implements Runnable {
                     break;
                 }
                 System.out.println("The time server receive order:"+body);
+                Thread.sleep(6000);
                 currentTime="QUERY TIME ORDER".equalsIgnoreCase(body)?new Date((System.currentTimeMillis())).toString():"BAD ORDER";
                 out.println(currentTime);
             }
-        }catch (IOException e){
+        }catch (Exception e){
             e.printStackTrace();
         }
     }
