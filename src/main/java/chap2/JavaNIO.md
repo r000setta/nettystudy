@@ -38,3 +38,16 @@ ServerSocket负责绑定IP地址，启动监听端口；Socket负责发起连接
 
 不需要通过Selector对注册的通道进行轮询操作即可实现异步读写，简化了NIO。
 
+## NIO服务端流程
+
+1. 创建ServerSocketChannel，配置为非阻塞模式
+2. 绑定监听，配置TCP餐数。
+3. 创建独立IO线程，用于轮询Selector。
+4. 创建Selector，将创建的ServerSocketChannel注册到Selector上，监听ACCEPT
+5. 启动IO线程，循环执行select方法，轮询就绪的Channel
+6. 轮询到就绪状态的channel时进行判断，如果是ACCEPT，说明新客户端接入，调用ServerSocketChannel.accept()接受新客户端。
+7. 设置值新接入的客户端链路SocketChannel为非阻塞，配置TCP参数。
+8. 将SocketChannel注册到Selector,监听READ
+9. 如果轮询的Channel为READ，说明SocketChannel中有新就绪的数据包需要读取，构造ByteBuffer读取数据包。
+10. 如果轮询的Channel为WRITE，说明还有数据没有发送完成，需要继续发送。
+
